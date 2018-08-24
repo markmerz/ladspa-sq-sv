@@ -11,6 +11,21 @@
 
 #include HILBERT_STEREO_H
 
+#ifdef SOX_LADSPA_PLUGIN_HACK
+
+#define HILBERT_LEFT_INPUT              0
+#define HILBERT_RIGHT_INPUT             1
+#define DUMMY_INPUT_1                   2
+#define DUMMY_INPUT_2                   3
+#define HILBERT_LEFT_OUTPUT0            4
+#define HILBERT_RIGHT_OUTPUT0           5
+#define HILBERT_LEFT_OUTPUT90           6
+#define HILBERT_RIGHT_OUTPUT90          7
+#define HILBERT_LATENCY                 8
+#define NUMBER_OF_PORTS                 9
+
+#else
+
 #define HILBERT_LEFT_INPUT              0
 #define HILBERT_RIGHT_INPUT             1
 #define HILBERT_LEFT_OUTPUT0            2
@@ -18,13 +33,19 @@
 #define HILBERT_LEFT_OUTPUT90           4
 #define HILBERT_RIGHT_OUTPUT90          5
 #define HILBERT_LATENCY                 6
+#define NUMBER_OF_PORTS                 7
 
+#endif
 
 static LADSPA_Descriptor *hilbertDescriptor = NULL;
 
 typedef struct {
     LADSPA_Data *left_input;
     LADSPA_Data *right_input;
+#ifdef SOX_LADSPA_PLUGIN_HACK
+    LADSPA_Data *dummy_input_1;
+    LADSPA_Data *dummy_input_2;
+#endif
     LADSPA_Data *left_output0;
     LADSPA_Data *left_output90;
     LADSPA_Data *right_output0;
@@ -64,6 +85,14 @@ static void connectPortHilbert(LADSPA_Handle instance, unsigned long port, LADSP
         case HILBERT_RIGHT_INPUT:
             plugin->right_input = data;
             break;
+#ifdef SOX_LADSPA_PLUGIN_HACK
+        case DUMMY_INPUT_1:
+            plugin->dummy_input_1 = data;
+            break;
+        case DUMMY_INPUT_2:
+            plugin->dummy_input_2 = data;
+            break;
+#endif
         case HILBERT_LEFT_OUTPUT0:
             plugin->left_output0 = data;
             break;
@@ -172,15 +201,15 @@ void __attribute__((constructor)) swh_init() {
         hilbertDescriptor->Name = D_("Hilbert transformer, two channels");
         hilbertDescriptor->Maker = "Steve Harris <steve@plugin.org.uk>, mod to two channels with more filter taps by Markko Merzin <markko.merzin@gmail.com>";
         hilbertDescriptor->Copyright = "GPL";
-        hilbertDescriptor->PortCount = 7;
+        hilbertDescriptor->PortCount = NUMBER_OF_PORTS;
 
-        port_descriptors = (LADSPA_PortDescriptor *) calloc(7, sizeof (LADSPA_PortDescriptor));
+        port_descriptors = (LADSPA_PortDescriptor *) calloc(NUMBER_OF_PORTS, sizeof (LADSPA_PortDescriptor));
         hilbertDescriptor->PortDescriptors = (const LADSPA_PortDescriptor *) port_descriptors;
 
-        port_range_hints = (LADSPA_PortRangeHint *) calloc(7, sizeof (LADSPA_PortRangeHint));
+        port_range_hints = (LADSPA_PortRangeHint *) calloc(NUMBER_OF_PORTS, sizeof (LADSPA_PortRangeHint));
         hilbertDescriptor->PortRangeHints = (const LADSPA_PortRangeHint *) port_range_hints;
 
-        port_names = (char **) calloc(7, sizeof (char*));
+        port_names = (char **) calloc(NUMBER_OF_PORTS, sizeof (char*));
         hilbertDescriptor->PortNames = (const char **) port_names;
 
         /* Parameters for Input */
@@ -191,6 +220,16 @@ void __attribute__((constructor)) swh_init() {
         port_descriptors[HILBERT_RIGHT_INPUT] = LADSPA_PORT_INPUT | LADSPA_PORT_AUDIO;
         port_names[HILBERT_RIGHT_INPUT] = D_("Right Input");
         port_range_hints[HILBERT_RIGHT_INPUT].HintDescriptor = 0;
+
+#ifdef SOX_LADSPA_PLUGIN_HACK
+        port_descriptors[HILBERT_LEFT_INPUT] = LADSPA_PORT_INPUT | LADSPA_PORT_AUDIO;
+        port_names[HILBERT_LEFT_INPUT] = D_("Dummy input 1");
+        port_range_hints[HILBERT_LEFT_INPUT].HintDescriptor = 0;
+
+        port_descriptors[HILBERT_RIGHT_INPUT] = LADSPA_PORT_INPUT | LADSPA_PORT_AUDIO;
+        port_names[HILBERT_RIGHT_INPUT] = D_("Dummy input 2");
+        port_range_hints[HILBERT_RIGHT_INPUT].HintDescriptor = 0;
+#endif
 
         /* Parameters for 0deg output */
         port_descriptors[HILBERT_LEFT_OUTPUT0] = LADSPA_PORT_OUTPUT | LADSPA_PORT_AUDIO;
@@ -213,7 +252,7 @@ void __attribute__((constructor)) swh_init() {
 
 
         /* Parameters for latency */
-        port_descriptors[HILBERT_LATENCY] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
+        port_descriptors[HILBERT_LATENCY] = LADSPA_PORT_OUTPUT | LADSPA_PORT_CONTROL;
         port_names[HILBERT_LATENCY] = D_("latency");
         port_range_hints[HILBERT_LATENCY].HintDescriptor = 0;
 

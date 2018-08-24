@@ -1,6 +1,15 @@
+#ifdef SOX_LADSPA_PLUGIN_HACK
+
+#define PLUGIN_ID 3834
+#define PLUGIN_NAME "hilbert_stereo_800taps_soxhack"
+
+#else
 
 #define PLUGIN_ID 3831
 #define PLUGIN_NAME "hilbert_stereo_800taps"
+
+#endif
+
 #define D_SIZE 1024
 #define NZEROS 800
 #define LATENCY 339
