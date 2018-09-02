@@ -222,13 +222,13 @@ void __attribute__((constructor)) swh_init() {
         port_range_hints[HILBERT_RIGHT_INPUT].HintDescriptor = 0;
 
 #ifdef SOX_LADSPA_PLUGIN_HACK
-        port_descriptors[HILBERT_LEFT_INPUT] = LADSPA_PORT_INPUT | LADSPA_PORT_AUDIO;
-        port_names[HILBERT_LEFT_INPUT] = D_("Dummy input 1");
-        port_range_hints[HILBERT_LEFT_INPUT].HintDescriptor = 0;
+        port_descriptors[DUMMY_INPUT_1] = LADSPA_PORT_INPUT | LADSPA_PORT_AUDIO;
+        port_names[DUMMY_INPUT_1] = D_("Dummy input 1");
+        port_range_hints[DUMMY_INPUT_1].HintDescriptor = 0;
 
-        port_descriptors[HILBERT_RIGHT_INPUT] = LADSPA_PORT_INPUT | LADSPA_PORT_AUDIO;
-        port_names[HILBERT_RIGHT_INPUT] = D_("Dummy input 2");
-        port_range_hints[HILBERT_RIGHT_INPUT].HintDescriptor = 0;
+        port_descriptors[DUMMY_INPUT_2] = LADSPA_PORT_INPUT | LADSPA_PORT_AUDIO;
+        port_names[DUMMY_INPUT_2] = D_("Dummy input 2");
+        port_range_hints[DUMMY_INPUT_2].HintDescriptor = 0;
 #endif
 
         /* Parameters for 0deg output */
