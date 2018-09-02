@@ -27,11 +27,11 @@ LADSPA_PATH=./ladspa-sq-sv ecasound -x -i sq-test-tones.flac \
     -el:hilbert_stereo_200taps -el:sq_decoder_shadow_vector -f:,4 -o test.wav
 
 Example usage with SoX:
-# with audio interface with 4 input channels:
+with audio interface with 4 input channels:
 LADSPA_PATH=./ladspa-sq-sv sox -r 192k -t alsa hw:1 -t alsa hw:0 \
     ladspa -l hilbert_stereo_800taps_soxhack ladspa -l sq_decoder_shadow_vector
 
-# with sound card with 2 input channels:
+with sound card with 2 input channels:
 LADSPA_PATH=./ladspa-sq-sv sox -r 48k -t alsa hw:1 -t alsa hw:0 \
     remix -m 1 2 0 0 ladspa -l hilbert_stereo_200taps_soxhack ladspa -l sq_decoder_shadow_vector
 
