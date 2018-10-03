@@ -11,6 +11,7 @@
 
 #endif
 
+#define GAIN_ADJUST 0.6355
 #define D_SIZE 256
 #define NZEROS 200
 #define LATENCY 99

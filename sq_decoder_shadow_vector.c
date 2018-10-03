@@ -242,14 +242,8 @@ static void runSqDecoderShadowVector(LADSPA_Handle instance, unsigned long sampl
         aLF = get_average(aLF, plugin_data->aLF_average);
         aRF = fabsf(input_right_i);
         aRF = get_average(aRF, plugin_data->aRF_average);
-        if (aLF > aRF) {
-            z = 1 - (aRF / aLF);
-        } else if (aLF < aRF) {
-            z = -1 + (aLF / aRF);
-        } else {
-            z = 0;
-        }
-       
+        z = (aLF - aRF) / (aLF + aRF);
+
         output_front_left = 0.7 * (input_left_i + x_s * (0.5 * input_right_i - 0.5 * input_left_i) + (((1 + y) / 2) * (-1) * input_right_j) + ((1 - y) / 2) * input_right_j);
         output_front_right = 0.7 * (input_right_i + x_s * (0.5 * input_left_i - 0.5 * input_right_i) + (((1 + y) / 2) * input_left_j) + ((1 - y) / 2) * (-1) * input_left_j);
 

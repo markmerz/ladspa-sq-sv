@@ -55,6 +55,7 @@ typedef struct {
     LADSPA_Data *right_delay;
     unsigned int left_dptr;
     unsigned int right_dptr;
+    double gain_adjust;
 } Hilbert;
 
 const LADSPA_Descriptor *ladspa_descriptor(unsigned long index) {
@@ -129,6 +130,7 @@ static LADSPA_Handle instantiateHilbert(const LADSPA_Descriptor *descriptor, uns
     plugin_data->left_dptr = left_dptr;
     plugin_data->right_dptr = right_dptr;
 
+    plugin_data->gain_adjust = GAIN_ADJUST;
     return (LADSPA_Handle) plugin_data;
 }
 
@@ -170,10 +172,10 @@ static void runHilbert(LADSPA_Handle instance, unsigned long sample_count) {
         }
 
         left_output0[pos] = left_delay[(left_dptr - LATENCY) & (D_SIZE - 1)];
-        left_output90[pos] = left_hilb;
+        left_output90[pos] = left_hilb * plugin_data->gain_adjust;
 
         right_output0[pos] = right_delay[(right_dptr - LATENCY) & (D_SIZE - 1)];
-        right_output90[pos] = right_hilb;
+        right_output90[pos] = right_hilb * plugin_data->gain_adjust;
 
         left_dptr = (left_dptr + 1) & (D_SIZE - 1);
         right_dptr = (right_dptr + 1) & (D_SIZE - 1);

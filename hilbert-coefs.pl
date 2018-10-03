@@ -8,7 +8,7 @@ use PDL::DSP::Windows;
 # helper for calculating hilbert transformer coefficents
 
 # my $N = 801;
-my $N = 2001;
+my $N = 2000;
 
 my @coefs = ();
 my $win = new PDL::DSP::Windows($N, 'hamming');

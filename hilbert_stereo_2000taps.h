@@ -10,6 +10,7 @@
 
 #endif
 
+#define GAIN_ADJUST 1
 #define D_SIZE 2048
 #define NZEROS 2000
 #define LATENCY 999
