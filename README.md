@@ -44,21 +44,16 @@ to sq-decoder-plugin.
 My setup consists of behringer u-phoria umc404hd audio interface and intel nuc
 minicomputer. Turntable is connected to audio interface and minicomputer feeds
 amplifier via hdmi connector. I experimented with raspberry pi3, it runs fine
-with 48k samplerate but not with 96k nor 192k rates. Little audiophool on my
-left shoulder says that i can hear the difference between 48k and 96k, so no 
-raspberry for me.
+with 48k samplerate but not with 96k nor 192k rates.
 
 I'm quite happy with plugins current performance. I's sounds way better then those
-hardware SQ decoders that i have listened: sony sqd-2020 and sqd-2050. It does not
-yet reach to directional separation of legendary Fosgate Tate II 101A, but stay
-tuned, because i have couple of ideas in that direction.
+hardware SQ decoders that i have listened: sony sqd-2020 and sqd-2050. It passes
+test signals flawlessly. Directional separation for 8 cardinal directions 
+is infinite. :)
 
 This is for linux. My windows-programming skills are somewhat rusty for now..
 It's should be trivial to port to windows and mac by someone who knows how
 develop to those platforms.
-
-Happy quadding! I heard (as of august 2018) that brand new sq encoded record was
-published.
 
 -- 
 With regards,
