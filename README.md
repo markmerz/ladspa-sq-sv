@@ -55,6 +55,20 @@ This is for linux. My windows-programming skills are somewhat rusty for now..
 It's should be trivial to port to windows and mac by someone who knows how
 develop to those platforms.
 
+## Update 24.02.2026
+
+Turns out that pulseaudio emulation over pipewire works better than direct ALSA. Pipewire cleverly resamples its streams as needed
+to avoid buffer underruns caused by slightly different clock speeds on different sound cards. Usage:
+
+sox -q -r 192k -b 32 -t pulseaudio behringer_ai_stereo_source -t pulseaudio behringer_ai_quadro_sink remix 1v1 2v1 0 0 ladspa -l hilbert_stereo_2000taps_soxhack ladspa -l sq_decoder_shadow_vector
+
+Uses about 40% of the one CPU on N97-equpped minicomputer. Honestly, there is no need to run it with those maxed-out parameters. 48k sample
+rate and 200 taps phase-shift-filter sounds the same for me. CPU usage drops to a few % of one CPU. My setup still uses maxed out config, because ...!
+
+About quality: I have re-capped the Sony SQD-2020 decoder and my digital decoder built around the Behringer UMC404HD audio interface. Digital decoder sounds much cleaner, without steering artefacts so obvious on Sony. Also, Sony adds some amount of hiss to the sound. Yet the Sony decoder sees a bit more use, mostly because illuminated dancing needles are so cool!
+
+I hope that the information here helps you to build your own SQ decoder and to enjoy an obscure wierd part of the history of sound recording.
+
 -- 
 With regards,
 Markko Merzin <markko.merzin@gmail.com>
